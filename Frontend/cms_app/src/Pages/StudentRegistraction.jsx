@@ -17,11 +17,16 @@ export default function StudentRegister() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    api
-      .post("/register/user", form)
-
-      .then(() => setMessage("Student registered successfully!"))
-      .catch(() => setMessage("Registration failed!"));
+  api
+  .post("/register/user", form)
+  .then(() => setMessage("Student registered successfully!"))
+  .catch((err) => {
+    if (err.response && err.response.data) {
+      setMessage(err.response.data);
+    } else {
+      setMessage("Registration failed!");
+    }
+  })
   };
 
   /* ------------------ THEME STYLE ------------------ */

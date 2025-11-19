@@ -17,12 +17,21 @@ export default function AdminRegister() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    api.post("/register/admin", form)
-      .then(() => setMessage("Admin registered successfully!"))
-      .catch(() => setMessage("Invalid secret code!"));
-  };
+  api
+    .post("/register/admin", form)
+    .then((res) => {
+      setMessage("Admin registered successfully!");
+    })
+    .catch((err) => {
+      if (err.response && err.response.data) {
+        setMessage(err.response.data);  // show backend message
+      } else {
+        setMessage("Something went wrong!");
+      }
+    });
+};
 
   /* ------------------ THEME STYLES ------------------ */
 

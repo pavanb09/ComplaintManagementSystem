@@ -18,29 +18,34 @@ export default function Login() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    api.post("/login", form)
-      .then(res => {
-        console.log(res.o);
-        
+  api.post("/login", form)
+    .then(res => {
+      console.log(res.data);
 
-        if (res.data.status === "success") {
-          localStorage.setItem("role", res.data.user.role);
-          localStorage.setItem("userId", res.data.user.id);
+      // SUCCESS CASE
+      if (res.data.status === "success") {
 
-          if (res.data.user.role === "admin") {
-            navigate("/admin/dashboard");
-          } else {
-            navigate("/student/home");
-          }
+        localStorage.setItem("role", res.data.user.role);
+        localStorage.setItem("userId", res.data.user.id);
 
+        if (res.data.user.role.toLowerCase() === "admin") {
+          navigate("/admin/dashboard");
         } else {
-          setError("Invalid Credentials");
+          navigate("/student/home");
         }
-      })
-      .catch(err => setError("Login Failed"));
-  };
+      }
+    })
+    .catch(err => {
+      if (err.response && err.response.data) {
+        setError(err.response.data.message); // Show backend error message
+      } else {
+        setError("Login failed. Try again.");
+      }
+    });
+};
+
 
   /* ------------------ THEME STYLE ------------------ */
 
