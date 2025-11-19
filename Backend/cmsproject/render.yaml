@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: cms-backend
+    env: java
+    plan: free
+    rootDir: Backend/cmsproject
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/*.jar"
